@@ -1,0 +1,84 @@
+{
+  "entities": {
+    "Lead": {
+      "title": "Lead",
+      "description": "A business lead captured from online platforms.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "description": "Contact person name" },
+        "companyName": { "type": "string", "description": "Name of the business or company" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "city": { "type": "string" },
+        "businessType": { "type": "string" },
+        "service": { "type": "string" },
+        "source": { "type": "string", "description": "Platform or source where the lead was found" },
+        "publishedDate": { "type": "string", "description": "Date when the lead was published or posted" },
+        "score": { "type": "number" },
+        "status": { "type": "string", "enum": ["New", "Contacted", "Qualified", "Converted", "Lost"] },
+        "priority": { "type": "string", "enum": ["High", "Medium", "Low"] },
+        "intent": { "type": "string" },
+        "rawText": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "ownerUid": { "type": "string" }
+      },
+      "required": ["name", "service", "status", "priority", "createdAt", "ownerUid"]
+    },
+    "User": {
+      "title": "User",
+      "description": "A business owner or agent using the system.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "agent"] },
+        "notificationPrefs": {
+          "type": "object",
+          "properties": {
+            "emailEnabled": { "type": "boolean" },
+            "whatsappEnabled": { "type": "boolean" },
+            "minScore": { "type": "number" }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role", "createdAt"]
+    },
+    "FollowUp": {
+      "title": "FollowUp",
+      "description": "A follow-up task for a lead.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "leadId": { "type": "string" },
+        "leadName": { "type": "string" },
+        "ownerUid": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "Completed", "Cancelled"] },
+        "scheduledAt": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string" },
+        "aiDraft": { "type": "string" },
+        "aiEmailDraft": { "type": "string" },
+        "aiWhatsappDraft": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["leadId", "leadName", "ownerUid", "status", "scheduledAt", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/leads/{leadId}": {
+      "schema": "Lead",
+      "description": "Collection of business leads."
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Collection of system users."
+    },
+    "/followups/{followupId}": {
+      "schema": "FollowUp",
+      "description": "Collection of follow-up tasks."
+    }
+  }
+}
